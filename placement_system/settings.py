@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-2zibx1qdtlb&(%@*pc669jl8y^(z38j35o&tdaxve(unu@pwsm'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -134,7 +134,7 @@ EMAIL_HOST_PASSWORD = 'efhdinjkvidicjat'  # Better: store in environment variabl
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://*.ngrok-free.dev",
+    "https://*.onrender.com",
 ]
 LOGIN_REDIRECT_URL = '/redirect-after-login/'
 LOGOUT_REDIRECT_URL = 'login'
