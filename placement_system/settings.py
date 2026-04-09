@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'placement_system.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'placement_db',
         'USER': 'django_user',
         'PASSWORD': '1234',
