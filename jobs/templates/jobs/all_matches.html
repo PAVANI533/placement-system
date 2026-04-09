@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Matched Candidates</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333333;
+            margin-bottom: 30px;
+        }
+
+        .match-card {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-left: 5px solid #007BFF;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .match-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+
+        .match-card p {
+            margin: 6px 0;
+            font-size: 15px;
+            color: #555555;
+        }
+
+        .match-card p strong {
+            color: #333333;
+        }
+
+        .no-match {
+            text-align: center;
+            color: #888888;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Matched Candidates (Above 50%)</h1>
+
+    {% for match in matches %}
+        <div class="match-card">
+            <p><strong>Candidate Name:</strong> {{ match.resume.full_name }}</p>
+            <p><strong>Email:</strong> {{ match.resume.email }}</p>
+            <p><strong>Job:</strong> {{ match.job.title }}</p>
+            <p><strong>Company:</strong> {{ match.job.company }}</p>
+            <p><strong>Match Percentage:</strong> {{ match.percentage }}%</p>
+        </div>
+    {% empty %}
+        <p class="no-match">No matching candidates found.</p>
+    {% endfor %}
+</div>
+
+</body>
+</html>

@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    .auth-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+    }
+
+    .auth-card {
+        background: white;
+        padding: 35px;
+        width: 400px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .auth-card h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #2c3e50;
+    }
+
+    .auth-card label {
+        font-weight: 500;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .auth-card input,
+    .auth-card select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+    }
+
+    .auth-card button {
+        width: 100%;
+        padding: 10px;
+        background: #3498db;
+        border: none;
+        color: white;
+        font-weight: bold;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .auth-card button:hover {
+        background: #2980b9;
+    }
+
+    .auth-footer {
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .auth-footer a {
+        text-decoration: none;
+        color: #3498db;
+        font-weight: 500;
+    }
+
+    /* 🔥 IMPORTANT FIX */
+    select {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+</style>
+
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <h2>Login</h2>
+
+        <form method="post">
+            {% csrf_token %}
+
+            {% if error %}
+                <p style="color:red; text-align:center;">{{ error }}</p>
+            {% endif %}
+
+            <!-- ROLE -->
+            <label>Select Role</label>
+            <select name="role" required>
+                <option value="">--Select--</option>
+                <option value="officer">Placement Officer</option>
+                <option value="student">Student</option>
+            </select>
+
+            <!-- USERNAME -->
+            <label>Username</label>
+            <input type="text" name="username" required>
+
+            <!-- PASSWORD -->
+            <label>Password</label>
+            <input type="password" name="password" required>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <div class="auth-footer">
+            <a href="{% url 'forgot_password' %}">Forgot Password?</a>
+            <br><br>
+            Don't have an account?
+            <a href="{% url 'register' %}">Register</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

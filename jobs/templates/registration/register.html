@@ -1,0 +1,282 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+.container {
+    max-width: 1000px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h3 {
+    margin-top: 25px;
+    color: #2563eb;
+}
+
+.row {
+    display: flex;
+    gap: 15px;
+}
+
+.field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+input, select, textarea {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1e40af;
+}
+</style>
+
+<div class="container">
+
+<h2>📝 Student Registration</h2>
+
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+
+<!-- 🔐 ACCOUNT -->
+<h3>🔐 Account Details</h3>
+<div class="row">
+    <div class="field">
+        <label>Username</label>
+        {{ form.username }}
+    </div>
+    <div class="field">
+        <label>Email</label>
+        {{ form.email }}
+    </div>
+</div>
+
+<div class="row">
+    <div class="field">
+        <label>Password</label>
+        {{ form.password1 }}
+    </div>
+    <div class="field">
+        <label>Confirm Password</label>
+        {{ form.password2 }}
+    </div>
+</div>
+
+<!-- 📸 PHOTO -->
+<h3>📸 Profile Photo</h3>
+<div class="field">
+    <label>Upload Photo</label>
+    <input type="file" name="photo">
+</div>
+
+<!-- 🏫 10TH -->
+<h3>🏫 10th Details</h3>
+
+<div class="field">
+    <label>School Name</label>
+    <input type="text" name="tenth_school">
+</div>
+
+<div class="row">
+    <div class="field">
+        <label>Area</label>
+        <input type="text" name="tenth_area">
+    </div>
+    <div class="field">
+        <label>District</label>
+        <input type="text" name="tenth_district">
+    </div>
+</div>
+
+<div class="row">
+    <div class="field">
+        <label>State</label>
+        <input type="text" name="tenth_state">
+    </div>
+    <div class="field">
+        <label>Pincode</label>
+        <input type="text" name="tenth_pincode">
+    </div>
+</div>
+
+<div class="row">
+    <div class="field">
+        <label>Board</label>
+        <select name="tenth_board">
+            <option>SSC</option>
+            <option>CBSE</option>
+            <option>ICSE</option>
+        </select>
+    </div>
+
+    <div class="field">
+        <label>Percentage</label>
+        <input type="number" name="tenth_percentage">
+    </div>
+
+    <div class="field">
+        <label>Passout Year</label>
+        <input type="number" name="tenth_year">
+    </div>
+</div>
+
+<!-- 🏫 INTER -->
+<h3>🏫 Intermediate Details</h3>
+
+<div class="field">
+    <label>College Name</label>
+    <input type="text" name="inter_college">
+</div>
+
+<div class="row">
+    <div class="field">
+        <label>Area</label>
+        <input type="text" name="inter_area">
+    </div>
+    <div class="field">
+        <label>District</label>
+        <input type="text" name="inter_district">
+    </div>
+</div>
+
+<div class="row">
+    <div class="field">
+        <label>State</label>
+        <input type="text" name="inter_state">
+    </div>
+    <div class="field">
+        <label>Pincode</label>
+        <input type="text" name="inter_pincode">
+    </div>
+</div>
+
+<div class="row">
+    <div class="field">
+        <label>Board</label>
+        <select name="inter_board">
+            <option>State Board</option>
+            <option>CBSE</option>
+        </select>
+    </div>
+
+    <div class="field">
+        <label>Stream</label>
+        <select name="inter_stream">
+            <option>MPC</option>
+            <option>BiPC</option>
+            <option>CEC</option>
+        </select>
+    </div>
+
+    <div class="field">
+        <label>Percentage</label>
+        <input type="number" name="inter_percentage">
+    </div>
+
+    <div class="field">
+        <label>Passout Year</label>
+        <input type="number" name="inter_year">
+    </div>
+</div>
+
+<!-- 🎓 BTECH -->
+<h3>🎓 B.Tech Details</h3>
+
+<div class="field">
+    <label>College Name</label>
+    <input type="text" name="btech_college">
+</div>
+
+<div class="row">
+    <div class="field">
+        <label>Roll Number</label>
+        <input type="text" name="roll_number">
+    </div>
+
+    <div class="field">
+        <label>Department</label>
+        <select name="department">
+            <option>CSE</option>
+            <option>ECE</option>
+            <option>EEE</option>
+            <option>MECH</option>
+            <option>CIVIL</option>
+        </select>
+    </div>
+
+    <div class="field">
+        <label>Current Year</label>
+        <input type="number" name="current_year">
+    </div>
+</div>
+
+<div class="row">
+    <div class="field">
+        <label>Email</label>
+        <input type="email" name="email">
+    </div>
+
+    <div class="field">
+        <label>Upload Resume</label>
+        <input type="file" name="resume">
+    </div>
+</div>
+
+<div class="row">
+    <div class="field">
+        <label>B.Tech Percentage</label>
+        <input type="number" name="btech_percentage">
+    </div>
+
+    <div class="field">
+        <label>Passout Year</label>
+        <input type="number" name="passout_year">
+    </div>
+
+    <div class="field">
+        <label>Backlogs</label>
+        <input type="number" name="backlogs">
+    </div>
+</div>
+
+<div class="field">
+    <label>Skills</label>
+    <textarea name="skills"></textarea>
+</div>
+
+<button type="submit">Register</button>
+
+</form>
+
+</div>
+
+{% endblock %}

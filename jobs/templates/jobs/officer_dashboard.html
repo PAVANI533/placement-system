@@ -1,0 +1,438 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.box {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background: #f1f5f9;
+}
+
+.btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-success { background: green; color: white; }
+.btn-danger { background: red; color: white; }
+
+.card h3 {
+    color: #1e293b;
+    margin-bottom: 10px;
+}
+
+.card p {
+    margin: 6px 0;
+    color: #475569;
+}
+.job-container {
+    width: 100%;
+    margin: 30px auto;
+}
+
+.job-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+
+.job-card:hover {
+    transform: translateY(-5px);
+}
+
+.job-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.job-info {
+    margin: 5px 0;
+    color: #444;
+}
+
+.job-actions {
+    margin-top: 15px;
+}
+
+.btn {
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    margin-right: 8px;
+}
+
+.btn-success {
+    background: #16a34a;
+    color: white;
+}
+
+.btn-danger {
+    background: #eb0606;
+    color: white;
+}
+.status-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.completed {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.ongoing {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.upcoming {
+    background: #dcfce7;
+    color: #166534;
+}
+.btn-edit {
+    background: #3b82f6;
+    color: white;
+}
+
+.btn-edit:hover {
+    background: #2563eb;
+}
+</style>
+
+<!-- ================= DASHBOARD ================= -->
+{% if not view_type or selected_job %}
+
+<div class="dashboard">
+    <div class="box">
+        <h3>{{ total_students }}</h3>
+        <p>Total Students</p>
+    </div>
+
+    <div class="box">
+        <h3>{{ total_jobs }}</h3>
+        <p>Jobs Posted</p>
+    </div>
+
+    <div class="box">
+        <h3>{{ total_placed }}</h3>
+        <p>Students Placed</p>
+    </div>
+
+    <div class="box">
+        <h3>{{ placement_percentage|floatformat:2 }}%</h3>
+        <p>Placement %</p>
+    </div>
+</div>
+<div class="job-container">
+{% for item in data %}
+<div class="job-card">
+    <h3>{{ item.job.title }} - {{ item.job.company }}</h3>
+
+    <p><b>📍 Location:</b> {{ item.job.location }}</p>
+
+    <p><b>👤 HR Name:</b> {{ item.job.hr_name|default:"Not Provided" }}</p>
+
+    <p><b>💰 Package:</b> {{ item.job.package|default:"Not Provided" }}</p>
+
+    <p><b>📅 Interview Date:</b> {{ item.job.interview_date|default:"Not Scheduled" }}</p>
+
+    <p><b>🛠 Skills:</b> {{ item.job.required_skills }}</p>
+
+    <p><b>📝 Description:</b> {{ item.job.description }}</p>
+
+    <p>
+        <a href="{{ item.job.company_url }}" target="_blank">
+            🔗 Company Website
+        </a>
+    </p>
+    <p>
+        <b>Status:</b> 
+        {% if item.status == "Completed" %}
+            <span style="color:red;">🔴 Drive Completed</span>
+        {% elif item.status == "Ongoing" %}
+            <span style="color:orange;">🟠 Ongoing Today</span>
+        {% elif item.status == "Upcoming" %}
+            <span style="color:green;">🟢 Upcoming</span>
+        {% else %}
+            <span>⚪ Not Scheduled</span>
+        {% endif %}
+    </p>
+
+    <!-- BUTTONS -->
+    <a href="?job={{ item.job.id }}&view=applied&department={{ request.GET.department }}">
+        <button class="btn btn-success">Applied</button>
+    </a>
+    
+    <a href="?job={{ item.job.id }}&view=selected&department={{ request.GET.department }}">
+        <button class="btn btn-danger">Selected</button>
+    </a>
+    <!-- <a href="?job={{ item.job.id }}&view=not_applied&department={{ request.GET.department }}">
+        <button class="btn">Not Applied</button>
+    </a> -->
+    <a href="{% url 'edit_job' item.job.id %}">
+        <button class="btn btn-edit">✏️ Edit Job</button>
+    </a>
+        <!-- SHOW DATA BELOW -->
+        {% if selected_job == item.job.id|stringformat:"s" %}
+    
+            <!-- FILTER -->
+            <form method="get" style="margin-top:10px;">
+                <input type="hidden" name="job" value="{{ item.job.id }}">
+                <input type="hidden" name="view" value="{{ view_type }}">
+    
+                <select name="department">
+                    <option value="">All</option>
+                    <option value="CSE" {% if request.GET.department == "CSE" %}selected{% endif %}>CSE</option>
+                    <option value="ECE" {% if request.GET.department == "ECE" %}selected{% endif %}>ECE</option>
+                    <option value="EEE" {% if request.GET.department == "EEE" %}selected{% endif %}>EEE</option>
+                    <option value="CIVIL" {% if request.GET.department == "CIVIL" %}selected{% endif %}>CIVIL</option>
+                    <option value="MECH" {% if request.GET.department == "MECH" %}selected{% endif %}>MECH</option>
+                </select>
+    
+                <button class="btn btn-success">Filter</button>
+            </form>
+    
+            <!-- APPLIED -->
+            {% if view_type == "applied" %}
+            <h4>📌 Applied Students</h4>
+            <table>
+                <tr><th>Name</th><th>Roll</th><th>Department</th></tr>
+                {% for a in item.applied %}
+                <tr>
+                    <td>{{ a.user.username }}</td>
+                    <td>{{ a.user.userprofile.roll_number }}</td>
+                    <td>{{ a.user.userprofile.department }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="3">No students</td></tr>
+                {% endfor %}
+            </table>
+            {% endif %}
+    
+            <!-- SELECTED -->
+            {% if view_type == "selected" %}
+            <h4>⭐ Selected Students</h4>
+            <table>
+                <tr><th>Name</th><th>Roll</th><th>Department</th></tr>
+                {% for s in item.selected %}
+                <tr>
+                    <td>{{ s.user.username }}</td>
+                    <td>{{ s.user.userprofile.roll_number }}</td>
+                    <td>{{ s.user.userprofile.department }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="3">No students</td></tr>
+                {% endfor %}
+                </table>
+        </div>
+            </table>
+            {% endif %}
+
+        {% endif %}
+    
+    </div>
+    {% endfor %}
+</div>
+
+
+{% endif %}
+</div>
+
+
+<!-- ================= NAVBAR VIEWS ================= -->
+{% if view_type and not selected_job %}
+
+<div class="card">
+    <h2>
+        {% if view_type == "applied" %}✅ Applied Students{% endif %}
+        {% if view_type == "selected" %}⭐ Selected Students{% endif %}
+        {% if view_type == "not_applied" %}❌ Not Applied Students{% endif %}
+    </h2>
+<!-- ✅ ADD HERE -->
+<form method="get" style="margin-bottom:15px;">
+
+    <!-- keep current view -->
+    <input type="hidden" name="view" value="{{ view_type }}">
+
+    <select name="department">
+        <option value="">All Departments</option>
+        <option value="CSE">CSE</option>
+        <option value="ECE">ECE</option>
+        <option value="EEE">EEE</option>
+        <option value="MECH">MECH</option>
+        <option value="CIVIL">CIVIL</option>
+    </select>
+
+    <button class="btn btn-success">Filter</button>
+</form>
+    {% for item in data %}
+    <h3>{{ item.job.company }}</h3>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Roll</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>CGPA</th>
+            <th>Backlogs</th>
+            <th>Year</th>
+            <th>Action</th>
+        </tr>
+
+        <!-- APPLIED -->
+        {% if view_type == "applied" %}
+        
+            {% for a in item.applied %}
+            <tr>
+                <td>{{ a.user.username }}</td>
+                <td>{{ a.user.userprofile.roll_number }}</td>
+                <td>{{ a.user.email }}</td>
+                <td>{{ a.user.userprofile.department }}</td>
+                <td>{{ a.user.userprofile.cgpa }}</td>
+                <td>{{ a.user.userprofile.backlogs }}</td>
+                <td>{{ a.user.userprofile.current_year }}</td>
+                <td>
+                    <form method="post" action="{% url 'update_status' a.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="status" value="selected">
+                        <input type="hidden" name="job" value="{{ item.job.id }}">
+                        <input type="hidden" name="view" value="{{ view_type }}">
+                        <button class="btn btn-success">Select</button>
+                        
+                    </form>
+            
+                    <form method="post" action="{% url 'update_status' a.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="status" value="rejected">
+                        <input type="hidden" name="job" value="{{ item.job.id }}">
+                        <input type="hidden" name="view" value="{{ view_type }}">
+                        <button class="btn btn-danger">Reject</button>
+                    </form>
+                    <form method="POST" action="{% url 'update_status' a.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="status" value="not_attended">
+                        <input type="hidden" name="job" value="{{ item.job.id }}">
+                        <input type="hidden" name="view" value="{{ view_type }}">
+                        <button class="btn btn-warning">Not Attended</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7">No students</td></tr>
+            {% endfor %}
+    </table>
+        <div style="margin-top:10px;">
+        <a href="{% url 'download_excel' %}?view=applied">
+            <button class="btn btn-success" style="margin-top:10px;background: rgb(151, 116, 136); color:white;">
+                ⬇ Download Applied Excel
+            </button>
+        </a>
+    </div>
+        {% endif %}
+
+        
+<!-- SELECTED -->
+{% if view_type == "selected" %}
+
+<table>   <!-- ✅ ADD THIS -->
+
+
+    {% for s in item.selected %}
+    <tr>
+        <td>{{ s.user.username }}</td>
+        <td>{{ s.user.userprofile.roll_number }}</td>
+        <td>{{ s.user.email }}</td>
+        <td>{{ s.user.userprofile.department }}</td>
+        <td>{{ s.user.userprofile.cgpa }}</td>
+        <td>{{ s.user.userprofile.backlogs }}</td>
+        <td>{{ s.user.userprofile.current_year }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="7">No students</td></tr>
+    {% endfor %}
+</table>
+
+<!-- ✅ ADD DOWNLOAD BELOW TABLE -->
+<div style="margin-top:10px ; ">
+    <a href="{% url 'download_excel' %}?view=selected">
+        <button class="btn btn-danger" style="background: rgb(11, 210, 21); color:white;" >
+            ⬇ Download Selected Excel
+        </button>
+    </a>
+</div>
+
+{% endif %}
+        <!-- NOT APPLIED -->
+{% if view_type == "not_applied" %}
+
+
+
+
+{% for s in item.not_applied %}
+<tr>
+    <td>{{ s.user.username }}</td>
+    <td>{{ s.roll_number }}</td>
+    <td>{{ s.user.email }}</td>
+    <td>{{ s.department }}</td>
+    <td>{{ s.cgpa }}</td>
+    <td>{{ s.backlogs }}</td>
+    <td>{{ s.current_year }}</td>
+</tr>
+{% empty %}
+<tr><td colspan="7">No students</td></tr>
+{% endfor %}
+</table>
+
+<a href="{% url 'download_excel' %}?view=not_applied{% if selected_job %}&job={{ selected_job }}{% endif %}">
+    <button class="btn btn-warning" style="margin-top:10px;">
+        ⬇ Download Not Applied Excel
+    </button>
+</a>
+{% endif %}
+{% endfor %}
+</div>
+{% endif %}
+{% endblock %}

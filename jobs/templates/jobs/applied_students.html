@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="card">
+    <h2>📄 Applied Students</h2>
+
+    <form method="GET">
+
+        <select name="company">
+            <option value="">Select Company</option>
+            {% for job in jobs %}
+                <option value="{{ job.company }}">{{ job.company }}</option>
+            {% endfor %}
+        </select>
+    
+        <select name="department">
+            <option value="">Select Department</option>
+            <option value="CSE">CSE</option>
+            <option value="ECE">ECE</option>
+            <option value="EEE">EEE</option>
+            <option value="MECH">MECHANICAL</option>
+            <option value="CIVIL">CIVIL</option>
+        </select>
+    
+        <button class="btn btn-primary">Filter</button>
+    </form>
+
+    {% if applications %}
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Status</th>
+        </tr>
+        {% for a in applications %}
+        <tr>
+            <td>{{ a.user.username }}</td>
+            <td>{{ a.status }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+</div>
+
+{% endblock %}

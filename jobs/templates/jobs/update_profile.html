@@ -1,0 +1,377 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+.container {
+    max-width: 1100px;
+    margin: auto;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.section-title h3 {
+    color: #1e3a8a;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+}
+
+label {
+    font-weight: 600;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin-top: 5px;
+}
+
+textarea {
+    height: 80px;
+}
+
+button {
+    margin-top: 15px;
+    padding: 12px;
+    width: 100%;
+    background: linear-gradient(to right, #2563eb, #1e40af);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.profile-img {
+    width: 120px;
+    border-radius: 50%;
+    margin-top: 10px;
+}
+.section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 🔥 Modern Edit Button */
+.edit-btn {
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: #4f46e5;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid #4f46e5;
+    transition: all 0.3s ease;
+}
+
+/* Hover effect */
+.edit-btn:hover {
+    background: #4f46e5;
+    color: white;
+    box-shadow: 0 4px 10px rgba(79,70,229,0.3);
+}
+.edit-btn::before {
+    content: "✏";
+    margin-right: 6px;
+}
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 14px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+}
+/* Resume container */
+.resume-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8fafc;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+/* Left side */
+.resume-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.resume-icon {
+    font-size: 22px;
+}
+
+.resume-name {
+    font-weight: 500;
+    color: #333;
+}
+
+/* View button */
+.view-btn {
+    text-decoration: none;
+    background: #10b981;
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.view-btn:hover {
+    background: #059669;
+}
+
+/* No resume text */
+.no-resume {
+    color: #999;
+    font-style: italic;
+}
+</style>
+
+<div class="container">
+
+<h2 style="text-align:center;">👤 Complete Your Profile</h2>
+
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+
+<!-- 📸 PHOTO -->
+<div class="card">
+    <div class="section-title">
+        <h3>📸 Profile Photo</h3>
+        <a href="?edit=photo" class="edit-btn">Edit</a>
+    </div>
+
+    {% if edit_section == "photo" %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="photo">
+        <button>Save</button>
+    </form>
+    {% else %}
+        {% if profile.photo %}
+            <img src="{{ profile.photo.url }}" class="profile-img">
+        {% endif %}
+    {% endif %}
+</div>
+
+<!-- 🏫 10TH -->
+<div class="card">
+    <div class="section-title">
+        <h3>🏫 10th Details</h3>
+        <a href="?edit=tenth" class="edit-btn">Edit</a>
+    </div>
+
+    {% if edit_section == "tenth" %}
+    <form method="POST">
+        {% csrf_token %}
+
+        <input name="tenth_school" value="{{ profile.tenth_school }}" placeholder="School">
+
+        <div class="grid-2">
+            <input name="tenth_area" value="{{ profile.tenth_area }}" placeholder="Area">
+            <input name="tenth_district" value="{{ profile.tenth_district }}" placeholder="District">
+        </div>
+
+        <div class="grid-2">
+            <input name="tenth_state" value="{{ profile.tenth_state }}" placeholder="State">
+            <input name="tenth_pincode" value="{{ profile.tenth_pincode }}" placeholder="Pincode">
+        </div>
+
+        <div class="grid-3">
+            <input name="tenth_board" value="{{ profile.tenth_board }}" placeholder="Board">
+            <input name="tenth_percentage" value="{{ profile.tenth_percentage }}" placeholder="Percentage">
+            <input name="tenth_year" value="{{ profile.tenth_year }}" placeholder="Year">
+        </div>
+
+        <button>Save</button>
+    </form>
+
+    {% else %}
+
+        <p><b>School:</b> {{ profile.tenth_school }}</p>
+        <p><b>Area:</b> {{ profile.tenth_area }}</p>
+        <p><b>District:</b> {{ profile.tenth_district }}</p>
+        <p><b>State:</b> {{ profile.tenth_state }}</p>
+        <p><b>Pincode:</b> {{ profile.tenth_pincode }}</p>
+        <p><b>Board:</b> {{ profile.tenth_board }}</p>
+        <p><b>Percentage:</b> {{ profile.tenth_percentage }}</p>
+        <p><b>Year:</b> {{ profile.tenth_year }}</p>
+
+    {% endif %}
+</div>
+
+<!-- 🏫 INTER -->
+<div class="card">
+    <div class="section-title">
+        <h3>🏫 Intermediate</h3>
+        <a href="?edit=inter" class="edit-btn">Edit</a>
+    </div>
+
+    {% if edit_section == "inter" %}
+    <form method="POST">
+        {% csrf_token %}
+
+        <input name="inter_college" value="{{ profile.inter_college }}" placeholder="College">
+
+        <div class="grid-3">
+            <input name="inter_stream" value="{{ profile.inter_stream }}" placeholder="Stream">
+            <input name="inter_percentage" value="{{ profile.inter_percentage }}" placeholder="Percentage">
+            <input name="inter_year" value="{{ profile.inter_year }}" placeholder="Year">
+        </div>
+
+        <div class="grid-2">
+            <input name="inter_area" value="{{ profile.inter_area }}" placeholder="Area">
+            <input name="inter_district" value="{{ profile.inter_district }}" placeholder="District">
+        </div>
+
+        <div class="grid-2">
+            <input name="inter_state" value="{{ profile.inter_state }}" placeholder="State">
+            <input name="inter_pincode" value="{{ profile.inter_pincode }}" placeholder="Pincode">
+        </div>
+
+        <input name="inter_board" value="{{ profile.inter_board }}" placeholder="Board">
+
+        <button>Save</button>
+    </form>
+
+    {% else %}
+
+        <p><b>College:</b> {{ profile.inter_college }}</p>
+        <p><b>Stream:</b> {{ profile.inter_stream }}</p>
+        <p><b>Percentage:</b> {{ profile.inter_percentage }}</p>
+        <p><b>Year:</b> {{ profile.inter_year }}</p>
+        <p><b>Area:</b> {{ profile.inter_area }}</p>
+        <p><b>District:</b> {{ profile.inter_district }}</p>
+        <p><b>State:</b> {{ profile.inter_state }}</p>
+        <p><b>Pincode:</b> {{ profile.inter_pincode }}</p>
+        <p><b>Board:</b> {{ profile.inter_board }}</p>
+
+    {% endif %}
+</div>
+
+<!-- 🎓 BTECH -->
+<div class="card">
+    <div class="section-title">
+        <h3>🎓 B.Tech</h3>
+        <a href="?edit=btech" class="edit-btn">Edit</a>
+    </div>
+
+    {% if edit_section == "btech" %}
+    <form method="POST">
+        {% csrf_token %}
+
+        <input name="btech_college" value="{{ profile.btech_college }}" placeholder="College">
+
+        <div class="grid-3">
+            <input name="roll_number" value="{{ profile.roll_number }}" placeholder="Roll">
+            <input name="current_year" value="{{ profile.current_year }}" placeholder="Year">
+            <input name="passout_year" value="{{ profile.passout_year }}" placeholder="Passout">
+        </div>
+
+        <div class="grid-2">
+            <input name="department" value="{{ profile.department }}" placeholder="Department">
+            <input name="btech_percentage" value="{{ profile.btech_percentage }}" placeholder="CGPA">
+        </div>
+
+        <input name="backlogs" value="{{ profile.backlogs }}" placeholder="Backlogs">
+
+        <textarea name="skills">{{ profile.skills }}</textarea>
+
+        <button>Save</button>
+    </form>
+
+    {% else %}
+
+        <p><b>College:</b> {{ profile.btech_college }}</p>
+        <p><b>Roll:</b> {{ profile.roll_number }}</p>
+        <p><b>Department:</b> {{ profile.department }}</p>
+        <p><b>Year:</b> {{ profile.current_year }}</p>
+        <p><b>CGPA:</b> {{ profile.btech_percentage }}</p>
+        <p><b>Backlogs:</b> {{ profile.backlogs }}</p>
+        <p><b>Skills:</b> {{ profile.skills }}</p>
+
+    {% endif %}
+</div>
+<!-- 📄 RESUME -->
+<div class="card">
+    <div class="section-title">
+        <h3>📄 Resume</h3>
+        <a href="?edit=resume" class="edit-btn">Edit</a>
+    </div>
+
+    <!-- ✅ EDIT MODE -->
+    {% if edit_section == "resume" %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <input type="file" name="resume" required>
+
+        <br><br>
+        <button class="btn btn-success">Upload</button>
+    </form>
+
+    <!-- ✅ VIEW MODE -->
+    {% else %}
+
+        {% if profile.resume %}
+        <div class="resume-box">
+            <div class="resume-info">
+                <span class="resume-icon">📄</span>
+                <span class="resume-name">My Resume</span>
+            </div>
+
+            <a href="{{ profile.resume.url }}" target="_blank" class="view-btn">
+                View
+            </a>
+        </div>
+        {% else %}
+            <p class="no-resume">No resume uploaded</p>
+        {% endif %}
+
+    {% endif %}
+</div>
+
+<button type="submit">🚀 Save Profile</button>
+
+</form>
+
+</div>
+
+{% endblock %}

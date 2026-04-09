@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Matched Jobs</title>
+</head>
+<body>
+    {% extends 'base.html' %}
+
+{% block content %}
+
+<h2 style="margin-bottom: 20px;">🎯 Recommended Jobs for You</h2>
+
+{% if jobs %}
+{% for item in jobs %}
+<div class="card">
+
+    <h3>{{ item.job.title }}</h3>
+
+    <p><b>Company:</b> {{ item.job.company }}</p>
+    <p><b>Skills:</b> {{ item.job.required_skills }}</p>
+
+    {% if item.missing %}
+        <p style="color:red;">
+            Missing Skills: {{ item.missing|join:", " }}
+        </p>
+    {% else %}
+        <p style="color:green;">Perfect Match ✅</p>
+    {% endif %}
+
+    {% if item.job.id in applied_jobs %}
+        <button class="btn btn-success">Applied</button>
+    {% else %}
+        <form method="POST" action="{% url 'apply_job' item.job.id %}">
+            {% csrf_token %}
+            <button class="btn btn-primary">Apply</button>
+        </form>
+    {% endif %}
+
+</div>
+{% endfor %}
+
+
+</body>
+</html>

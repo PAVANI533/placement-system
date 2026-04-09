@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="card">
+    <h2>🏆 Selected Students</h2>
+
+    <!-- 🔽 FILTERS -->
+    <form method="GET">
+        <select name="company">
+            <option value="">Select Company</option>
+            {% for job in jobs %}
+                <option value="{{ job.company }}">{{ job.company }}</option>
+            {% endfor %}
+        </select>
+
+        <select name="department">
+            <option value="">Select Department</option>
+            <option value="CSE">CSE</option>
+            <option value="ECE">ECE</option>
+            <option value="EEE">EEE</option>
+            <option value="MECH">MECHANICAL</option>
+            <option value="CIVIL">CIVIL</option>
+        </select>
+
+        <button class="btn btn-primary">Filter</button>
+    </form>
+
+    <br>
+
+    {% if selected %}
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Status</th>
+        </tr>
+
+        {% for s in selected %}
+        <tr>
+            <td>{{ s.user.username }}</td>
+            <td>{{ s.user.userprofile.department }}</td>
+            <td>{{ s.status }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p>No selected students</p>
+    {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,13 @@
+<h2>Security Question</h2>
+
+<p>{{ question }}</p>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="password" name="answer" placeholder="Your Answer" required>
+    <button type="submit">Verify</button>
+</form>
+
+{% if error %}
+<p style="color:red">{{ error }}</p>
+{% endif %}

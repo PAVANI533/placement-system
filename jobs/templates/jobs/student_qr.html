@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div style="text-align:center; margin-top:50px;">
+
+    <h2>📌 My QR Code</h2>
+
+    <img src="data:image/png;base64,{{ qr_code }}" width="200">
+
+    <br><br>
+
+    <a href="data:image/png;base64,{{ qr_code }}" download="my_qr.png">
+        <button style="padding:10px 20px;">Download QR</button>
+    </a>
+
+</div>
+
+{% endblock %}

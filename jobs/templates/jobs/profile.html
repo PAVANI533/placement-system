@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="card">
+    <h2>Your Profile</h2>
+
+    {% if resume %}
+    <p><b>Name:</b> {{ resume.full_name|default:"-" }}</p>
+    <p><b>Email:</b> {{ resume.email|default:"-" }}</p>
+    <p><b>Skills:</b> {{ resume.skills|default:"-" }}</p>
+    <p>Phone: {{ profile.phone }}</p>
+<p>Degree: {{ profile.degree }}</p>
+
+<img src="{{ profile.photo.url }}" width="100">
+{% else %}
+    <p>No resume uploaded</p>
+{% endif %}
+</div>
+
+{% endblock %}

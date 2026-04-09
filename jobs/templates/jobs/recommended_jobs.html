@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+.job-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: #2563eb;
+    color: white;
+}
+
+.details {
+    margin-top: 15px;
+    display: none;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+}
+
+.skill {
+    background: #e2e8f0;
+    padding: 5px 10px;
+    border-radius: 20px;
+    margin-right: 5px;
+    font-size: 12px;
+}
+</style>
+
+<h2>⭐ Recommended Jobs</h2>
+
+{% for job in jobs %}
+<div class="job-card">
+
+    <h3>{{ job.company }}</h3>
+
+    <!-- SKILLS -->
+    <p>
+        {% for skill in job.skills_list %}
+            <span class="skill">{{ skill }}</span>
+        {% endfor %}
+    </p>
+
+    <!-- BUTTON -->
+    <button class="btn btn-primary" onclick="toggleDetails('{{ job.id }}')">
+        View Details
+    </button>
+
+    <!-- DETAILS (HIDDEN) -->
+    <div id="details-{{ job.id }}" class="details">
+
+        <p><b>Role:</b> {{ job.title }}</p>
+        <p><b>Location:</b> {{ job.location }}</p>
+        <p><b>Package:</b> {{ job.package }}</p>
+        <p><b>HR:</b> {{ job.hr_name }}</p>
+        <p><b>Interview Date:</b> {{ job.interview_date }}</p>
+
+        <p><b>Description:</b><br>{{ job.description }}</p>
+
+    </div>
+
+</div>
+{% empty %}
+<p>No recommended jobs found</p>
+{% endfor %}
+
+<script>
+function toggleDetails(id) {
+    var box = document.getElementById("details-" + id);
+    if (box.style.display === "none") {
+        box.style.display = "block";
+    } else {
+        box.style.display = "none";
+    }
+}
+</script>
+
+{% endblock %}

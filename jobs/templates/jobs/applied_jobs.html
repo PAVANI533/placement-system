@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+.job-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+
+.job-card:hover {
+    transform: translateY(-3px);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.company {
+    color: #64748b;
+    font-size: 14px;
+}
+
+.status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* STATUS COLORS */
+.selected {
+    background: #dcfce7;
+    color: green;
+}
+
+.applied {
+    background: #e0f2fe;
+    color: #0369a1;
+}
+
+.rejected {
+    background: #fee2e2;
+    color: red;
+}
+</style>
+
+<h2>📄 Applied Jobs</h2>
+
+{% for app in applications %}
+<div class="job-card">
+
+    <div class="header">
+        <div>
+            <h3>{{ app.job.title }}</h3>
+            <p class="company">{{ app.job.company }}</p>
+        </div>
+
+        <!-- STATUS BADGE -->
+        <div class="status {{ app.status }}">
+            {{ app.status|title }}
+        </div>
+    </div>
+
+    <hr>
+
+    <p><b>📍 Location:</b> {{ app.job.location }}</p>
+    <p><b>💰 Package:</b> {{ app.job.package }}</p>
+
+    <!-- SKILLS -->
+    <p>
+        <b>🛠 Skills:</b>
+        {% for skill in app.job.skills_list %}
+            <span style="background:#e2e8f0;padding:4px 8px;border-radius:10px;margin-right:5px;">
+                {{ skill }}
+            </span>
+        {% empty %}
+            No skills listed
+        {% endfor %}
+    </p>
+
+    <p><b>📝 Description:</b> {{ app.job.description }}</p>
+
+</div>
+{% empty %}
+<p>No applied jobs yet</p>
+{% endfor %}
+
+{% endblock %}

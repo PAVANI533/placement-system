@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Placement System</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: #f1f5f9;
+        }
+
+        .navbar {
+            background: #0f172a;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h2 {
+            color: white;
+            margin: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #cbd5e1;
+            margin: 0 10px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+    </style>
+</head>
+
+<body>
+
+{% if user.is_authenticated %}
+<div class="navbar">
+    <h2>🎓 Placement System</h2>
+
+    <div class="nav-links">
+
+        {% if user.is_superuser %}
+        <a href="{% url 'students' %}">Students</a>
+        <a href="{% url 'add_job' %}">Add Job</a>
+        <a href="/officer/">Dashboard</a>
+        <a href="/officer-dashboard/?view=applied">Applied</a>
+        <a href="/officer-dashboard/?view=selected">Selected</a>
+        <a href="/officer-dashboard/?view=not_applied">Not Applied</a>
+        {% else %}
+            <a href="{% url 'job_list' %}">Home</a>
+            <a href="{% url 'recommended_jobs' %}">Recommended</a>
+            <a href="{% url 'applied_jobs' %}">Applied</a>
+            <a href="{% url 'update_profile' %}">Profile</a>
+            <a href="{% url 'student_qr' %}">My QR</a>
+        {% endif %}
+
+        <a href="{% url 'logout' %}" style="background:red;padding:8px 12px;border-radius:5px;color:white;">
+            Logout
+        </a>
+
+    </div>
+</div>
+{% endif %}
+
+<div class="container">
+    
+    {% block content %}{% endblock %}
+</div>
+
+</body>
+</html>

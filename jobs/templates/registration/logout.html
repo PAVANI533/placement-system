@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    .auth-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+    }
+
+    .auth-card {
+        background: white;
+        padding: 40px;
+        width: 380px;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+
+    .auth-card h2 {
+        margin-bottom: 15px;
+        color: #2c3e50;
+    }
+
+    .auth-card p {
+        margin-bottom: 25px;
+        color: #555;
+    }
+
+    .auth-card a {
+        display: inline-block;
+        padding: 10px 20px;
+        background: #3498db;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+    .auth-card a:hover {
+        background: #2980b9;
+    }
+</style>
+
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <h2>You Have Been Logged Out</h2>
+        <p>Thank you for using our platform.</p>
+
+        <a href="{% url 'login' %}">Login Again</a>
+    </div>
+</div>
+
+{% endblock %}

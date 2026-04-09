@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+.search-box {
+    margin-bottom: 20px;
+}
+
+.search-box input {
+    width: 300px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.job-card {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+
+.job-card:hover {
+    transform: translateY(-3px);
+}
+
+.job-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.job-info {
+    margin: 6px 0;
+    color: #334155;
+}
+
+.badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-right: 5px;
+}
+
+.badge-skill {
+    background: #e0f2fe;
+    color: #0369a1;
+}
+
+.status {
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+.status-applied {
+    color: green;
+}
+
+.status-not {
+    color: red;
+}
+
+.apply-btn {
+    margin-top: 12px;
+    background: #0ea5e9;
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.apply-btn:hover {
+    background: #0284c7;
+}
+
+.disabled-btn {
+    margin-top: 12px;
+    background: #9ca3af;
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 8px;
+}
+.alert-box {
+    background: #ef4444;
+    color: white;
+    padding: 12px 15px;
+    border-radius: 10px;
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+
+.alert-box:nth-child(2) {
+    background: #f87171;
+}
+
+.alert-box:nth-child(3) {
+    background: #991b1b;
+}
+
+.close-btn {
+    cursor: pointer;
+    font-weight: bold;
+}
+</style>
+
+<h2>💼 Available Jobs</h2>
+
+<div class="search-box">
+    <input type="text" placeholder="Search jobs...">
+</div>
+<div class="card">
+    <h3>⚠️ Escalations</h3>
+
+    {% for e in escalations %}
+    <div class="alert-box">
+        {{ e }}
+        <span class="close-btn">&times;</span>
+    </div>
+    {% endfor %}
+
+</div>
+{% for job in jobs %}
+<div class="job-card">
+
+    <!-- TITLE -->
+    <div class="job-title">
+        {{ job.title }} - {{ job.company }}
+    </div>
+
+    <!-- DETAILS -->
+    <div class="job-info"><b>📍 Location:</b> {{ job.location }}</div>
+    <div class="job-info"><b>💰 Package:</b> {{ job.package }}</div>
+    <div class="job-info"><b>👨‍💼 HR:</b> {{ job.hr_name }}</div>
+    <div class="job-info">
+        <b>📅 Interview:</b> {{ job.interview_date|date:"M d, Y" }}
+    </div>
+
+    <!-- STATUS -->
+    <p><b>Status:</b> 
+        {% for app in request.user.jobapplication_set.all %}
+            {% if app.job.id == job.id %}
+                
+                {% if app.status == "selected" %}
+                    <span style="color:green;">✔ Selected</span>
+    
+                {% elif app.status == "rejected" %}
+                    <span style="color:red;">✖ Rejected</span>
+    
+                {% elif app.status == "not_attended" %}
+                    <span style="color:orange;">⚠ Not Attended</span>
+    
+                {% else %}
+                    <span style="color:blue;">⏳ Applied</span>
+                {% endif %}
+    
+            {% endif %}
+        {% endfor %}
+    </p>
+
+    <!-- SKILLS -->
+    <div class="job-info">
+        <b>🛠 Skills:</b>
+        {% for skill in job.skills_list %}
+            <span class="badge badge-skill">{{ skill }}</span>
+        {% endfor %}
+    </div>
+
+    <!-- DESCRIPTION -->
+    <div class="job-info">
+        <b>📝 Description:</b><br>
+        {{ job.description }}
+    </div>
+
+    <!-- APPLY STATUS -->
+    {% if job.id in applied_job_ids %}
+        <div class="status status-applied">✅ Applied</div>
+    {% else %}
+        <div class="status status-not">❌ Not Applied</div>
+    {% endif %}
+
+    <!-- APPLY BUTTON -->
+    {% if job.status == "Completed" %}
+        <button class="disabled-btn">Application Closed</button>
+
+    {% elif job.id not in applied_job_ids %}
+        <form method="post" action="{% url 'apply_job' job.id %}">
+            {% csrf_token %}
+            <button class="apply-btn">Apply Now</button>
+        </form>
+    {% endif %}
+
+</div>
+{% endfor %}
+<script>
+    document.querySelectorAll('.close-btn').forEach(btn => {
+        btn.onclick = function() {
+            this.parentElement.style.display = "none";
+        }
+    });
+    </script>
+{% endblock %}
