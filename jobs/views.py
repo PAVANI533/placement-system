@@ -219,7 +219,8 @@ def register(request):
             user = form.save()
 
             # 🔥 CREATE PROFILE
-            profile = UserProfile.objects.create(user=user,role="student")
+            profile = UserProfile.objects.get(user=user)
+            profile.role = "student"
 
             # PHOTO
             if request.FILES.get('photo'):
@@ -270,7 +271,7 @@ def register(request):
 
             if user:
                 return redirect('login')
-                return redirect('job_list')
+                
 
     else:
         form = CustomUserRegisterForm()
