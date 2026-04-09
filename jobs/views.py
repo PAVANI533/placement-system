@@ -271,7 +271,9 @@ def register(request):
 
             if user:
                 return redirect('login')
-                
+        else:
+            print(form.errors)
+
 
     else:
         form = CustomUserRegisterForm()
