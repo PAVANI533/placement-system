@@ -222,7 +222,6 @@ def register(request):
 
             # 🔥 CREATE PROFILE
             profile, created = UserProfile.objects.get_or_create(user=user)
-            profile.role = "student"
 
             # PHOTO
             if request.FILES.get('photo'):
