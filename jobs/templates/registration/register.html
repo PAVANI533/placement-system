@@ -3,6 +3,7 @@
 
 <style>
 .container {
+    width: 90%;
     max-width: 1000px;
     margin: auto;
     background: white;
@@ -38,12 +39,20 @@ label {
 }
 
 input, select, textarea {
+    width:100%;
     padding: 10px;
     border-radius: 6px;
     border: 1px solid #ccc;
     margin-bottom: 15px;
 }
+.row {
+    display: flex;
+    gap: 10px;
+}
 
+.row input {
+    flex: 1;
+}
 button {
     width: 100%;
     padding: 12px;
@@ -59,7 +68,7 @@ button:hover {
     background: #1e40af;
 }
 form {
-    width: 350px;
+    width: 100%;
     margin: auto;
     padding: 20px;
     border: 1px solid #ddd;
@@ -318,8 +327,7 @@ button:hover {
     <input type="text" name="security_answer" placeholder="Your Answer" required>
 
     <button type="submit">Register</button>
-</form>
-<button type="submit">Register</button>
+
 
 </form>
 

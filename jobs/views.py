@@ -258,15 +258,16 @@ def register(request):
             profile.btech_percentage = request.POST.get('btech_percentage')
             profile.backlogs = request.POST.get('backlogs') or 0
             profile.skills = request.POST.get('skills')
-            profile.phone = form.cleaned_data.get('phone')
-            profile.security_question = form.cleaned_data.get('security_question')
-            profile.security_answer = form.cleaned_data.get('security_answer')
+            profile.phone = form.cleaned_data.get('phone',"")
+            profile.security_question = form.cleaned_data.get('security_question',"")
+            profile.security_answer = form.cleaned_data.get('security_answer',"")
             # RESUME
             if request.FILES.get('resume'):
                 profile.resume = request.FILES.get('resume')
-
-            profile.save()
-
+            try:
+                profile.save()
+            except Exception as e:
+                print(e)
             # LOGIN
             username = form.cleaned_data.get("username")
             password = form.cleaned_data.get("password1")
