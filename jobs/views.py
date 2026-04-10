@@ -213,13 +213,15 @@ from .models import UserProfile
 
 def register(request):
     if request.method == "POST":
-        form = CustomUserRegisterForm(request.POST)
+        form = CustomUserRegisterForm(request.POST,request.FILES)
 
         if form.is_valid():
-            user = form.save()
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data.get("password1"))  # 🔥 IMPORTANT
+            user.save()
 
             # 🔥 CREATE PROFILE
-            profile = UserProfile.objects.get(user=user)
+            profile, created = UserProfile.objects.get_or_create(user=user)
             profile.role = "student"
 
             # PHOTO
@@ -269,8 +271,7 @@ def register(request):
 
             user = authenticate(request, username=username, password=password)
 
-            if user:
-                return redirect('login')
+            return redirect('login')
         else:
             print(form.errors)
 
