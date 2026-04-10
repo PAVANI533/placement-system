@@ -17,30 +17,8 @@ class CustomUserRegisterForm(UserCreationForm):
         label="Security Answer"
     )
 
-    # captcha = forms.IntegerField(label="")
-
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-
-        # # Dynamic CAPTCHA
-        # self.num1 = random.randint(1, 10)
-        # self.num2 = random.randint(1, 10)
-        # self.fields['captcha'].label = f"What is {self.num1} + {self.num2}?"
 
 
-    def save(self, commit=True):
-        user = super().save(commit)
-
-        from .models import UserProfile
-
-    # ✅ FIX: use get_or_create instead of create
-        profile, created = UserProfile.objects.get_or_create(user=user)
-
-        profile.security_question = self.cleaned_data["security_question"]
-        profile.security_answer = self.cleaned_data["security_answer"]
-        profile.save()
-
-        return user
     class Meta:
         model = User
         fields = ["username", "email", "password1", "password2"]

@@ -216,7 +216,7 @@ def register(request):
         form = CustomUserRegisterForm(request.POST,request.FILES)
 
         if form.is_valid():
-            user = form.save(commit=False)
+            user = form.save()
             user.set_password(form.cleaned_data.get("password1"))  # 🔥 IMPORTANT
             user.save()
 
@@ -255,7 +255,7 @@ def register(request):
             profile.current_year = request.POST.get('current_year')
             profile.passout_year = request.POST.get('passout_year')
             profile.btech_percentage = request.POST.get('btech_percentage')
-            profile.backlogs = request.POST.get('backlogs') or 0
+            profile.backlogs = int(request.POST.get('backlogs') or 0)
             profile.skills = request.POST.get('skills')
             profile.phone = form.cleaned_data.get('phone',"")
             profile.security_question = form.cleaned_data.get('security_question',"")
@@ -268,10 +268,6 @@ def register(request):
             except Exception as e:
                 print(e)
             # LOGIN
-            username = form.cleaned_data.get("username")
-            password = form.cleaned_data.get("password1")
-
-            user = authenticate(request, username=username, password=password)
 
             return redirect('login')
         else:
