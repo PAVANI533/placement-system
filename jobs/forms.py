@@ -5,7 +5,7 @@ from .models import UserProfile, SECURITY_QUESTIONS
 import random
 
 class CustomUserRegisterForm(UserCreationForm):
-
+    phone = forms.CharField(max_length=10, required=True)
     security_question = forms.ChoiceField(
         choices=SECURITY_QUESTIONS,
         label="Select Security Question"
@@ -43,7 +43,7 @@ class CustomUserRegisterForm(UserCreationForm):
         return user
     class Meta:
         model = User
-        fields = ["username", "email", "first_name", "last_name", "password1", "password2"]
+        fields = ["username", "email", "password1", "password2"]
 
 class UsernameForm(forms.Form):
     username = forms.CharField()

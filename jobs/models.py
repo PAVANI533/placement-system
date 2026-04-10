@@ -107,7 +107,9 @@ class UserProfile(models.Model):
     current_year = models.IntegerField(null=True, blank=True)
     backlogs = models.IntegerField(default=0)
     cgpa = models.FloatField(null=True, blank=True)
-    
+    phone = models.CharField(max_length=10, null=True, blank=True)
+    security_question = models.CharField(max_length=100, null=True, blank=True)
+    security_answer = models.CharField(max_length=100, null=True, blank=True)
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.db.models.signals import post_save

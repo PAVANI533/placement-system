@@ -58,6 +58,41 @@ button {
 button:hover {
     background: #1e40af;
 }
+form {
+    width: 350px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #f9f9f9;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input:focus, select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #0056b3;
+}
 </style>
 
 <div class="container">
@@ -192,8 +227,6 @@ button:hover {
         <label>Stream</label>
         <select name="inter_stream">
             <option>MPC</option>
-            <option>BiPC</option>
-            <option>CEC</option>
         </select>
     </div>
 
@@ -273,6 +306,19 @@ button:hover {
     <textarea name="skills"></textarea>
 </div>
 
+    <input type="text" name="phone" placeholder="Phone Number" required>
+
+    <select name="security_question" required>
+        <option value="">Select Security Question</option>
+        <option value="pet">What is your pet name?</option>
+        <option value="school">What is your school name?</option>
+        <option value="city">Which city were you born in?</option>
+    </select>
+
+    <input type="text" name="security_answer" placeholder="Your Answer" required>
+
+    <button type="submit">Register</button>
+</form>
 <button type="submit">Register</button>
 
 </form>
