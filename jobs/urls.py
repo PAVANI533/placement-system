@@ -31,8 +31,7 @@ urlpatterns = [
 
 
     path('logout/', views.custom_logout, name='logout'),
-    # Captcha
-    path('captcha/', include('captcha.urls')),
+
     path('resources/', views.resources, name='resources'),
     path('update-profile/', views.update_profile, name='update_profile'),
     path('officer/', views.officer_dashboard, name='officer_dashboard'),
