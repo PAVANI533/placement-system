@@ -1,1 +1,1 @@
-web: python manage.py migrate && gunicorn placement_system.wsgi --bind 0.0.0.0:$PORT
+web: gunicorn placement_system.wsgi
