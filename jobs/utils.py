@@ -26,4 +26,12 @@ def match_resume_ml(resume_text, job_text):
     else:
         common = set(resume_text.split()) & set(job_text.split())
         score = len(common) / max(len(job_text.split()), 1)
-        return round(score * 100, 2)
+def skill_gap_analysis(resume_text, job_description):
+    resume_words = set(clean_text(resume_text).split())
+    job_words = set(clean_text(job_description).split())
+
+    missing_skills = job_words - resume_words
+
+    return list(missing_skills)[:10]  # show top 10 missing skills
+def send_job_notification(user, job):
+    print(f"Notification sent to {user} for job {job}")
