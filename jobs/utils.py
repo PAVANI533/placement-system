@@ -1,13 +1,15 @@
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
+try:
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from sklearn.metrics.pairwise import cosine_similarity
+    ML_AVAILABLE = True
+except:
+    ML_AVAILABLE = False
 
 
-# ✅ Clean text
 def clean_text(text):
     return text.lower().replace(",", " ").replace("\n", " ")
 
 
-# ✅ ML Matching (TF-IDF + Cosine Similarity)
 def match_resume_ml(resume_text, job_text):
 
     if not resume_text or not job_text:
@@ -16,48 +18,12 @@ def match_resume_ml(resume_text, job_text):
     resume_text = clean_text(resume_text)
     job_text = clean_text(job_text)
 
-    texts = [resume_text, job_text]
-
-    vectorizer = TfidfVectorizer(stop_words='english', ngram_range=(1,2))
-    vectors = vectorizer.fit_transform(texts)
-
-    similarity = cosine_similarity(vectors[0:1], vectors[1:2])[0][0]
-
-    return round(similarity * 100, 2)
-
-def skill_gap_analysis(user_skills, job_skills):
-    user_set = set(skill.strip().lower() for skill in user_skills.split(","))
-    job_set = set(skill.strip().lower() for skill in job_skills.split(","))
-
-    missing = job_set - user_set
-
-    return list(missing)
-
-from django.core.mail import send_mail
-from django.contrib.auth.models import User
-
-def send_job_notification(job):
-    students = User.objects.filter(is_superuser=False)
-
-    emails = [user.email for user in students if user.email]
-
-    subject = f"New Job Opportunity: {job.company}"
-
-    message = f"""
-New Job Posted!
-
-Company: {job.company}
-Package: {job.package}
-Skills Required: {job.required_skills}
-
-Apply now in Placement System.
-"""
-
-    if emails:
-        send_mail(
-            subject,
-            message,
-            'your_email@gmail.com',  # replace
-            emails,
-            fail_silently=False
-        )
+    if ML_AVAILABLE:
+        vectorizer = TfidfVectorizer(stop_words='english', ngram_range=(1,2))
+        vectors = vectorizer.fit_transform([resume_text, job_text])
+        similarity = cosine_similarity(vectors[0:1], vectors[1:2])[0][0]
+        return round(similarity * 100, 2)
+    else:
+        common = set(resume_text.split()) & set(job_text.split())
+        score = len(common) / max(len(job_text.split()), 1)
+        return round(score * 100, 2)
