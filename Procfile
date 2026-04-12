@@ -1,1 +1,1 @@
-web: gunicorn placement_system.wsgi
+web: gunicorn placement_system.wsgi --bind 0.0.0.0:$PORT
