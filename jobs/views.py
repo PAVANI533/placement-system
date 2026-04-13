@@ -1016,7 +1016,20 @@ def send_job_notification(job):
         fail_silently=False,
     )
 
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+
 def custom_login(request):
+
+    # ✅ AUTO CREATE SUPERUSER (IMPORTANT)
+    if not User.objects.filter(username="admin").exists():
+        User.objects.create_superuser(
+            username="admin",
+            email="admin@gmail.com",
+            password="admin123"
+        )
+
     if request.method == "POST":
         role = request.POST.get("role")
         username = request.POST.get("username")
