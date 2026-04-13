@@ -144,7 +144,7 @@ EMAIL_HOST_PASSWORD = 'efhdinjkvidicjat'  # Better: store in environment variabl
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://*.onrender.com",
+    'https://*.railway.app',
 ]
 LOGIN_REDIRECT_URL = '/redirect-after-login/'
 LOGOUT_REDIRECT_URL = 'login'
