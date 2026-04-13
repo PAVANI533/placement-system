@@ -2,6 +2,12 @@ from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.conf import settings
+from django.core.management import call_command
+
+try:
+    call_command('migrate', interactive=False)
+except Exception as e:
+    print("Migration error:", e)
 from .models import Job, Resume, JobMatch,JobApplication
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
