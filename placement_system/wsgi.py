@@ -9,6 +9,8 @@ https://docs.djangoproject.com/en/6.0/howto/deployment/wsgi/
 
 import os
 
+port = os.environ.get("PORT", "8000")
+os.environ["PORT"] = port
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'placement_system.settings')
