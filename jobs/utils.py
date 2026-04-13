@@ -1,15 +1,13 @@
-try:
-    from sklearn.feature_extraction.text import TfidfVectorizer
-    from sklearn.metrics.pairwise import cosine_similarity
-    ML_AVAILABLE = True
-except:
-    ML_AVAILABLE = False
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 
+# ✅ Clean text
 def clean_text(text):
     return text.lower().replace(",", " ").replace("\n", " ")
 
 
+# ✅ ML Matching (TF-IDF + Cosine Similarity)
 def match_resume_ml(resume_text, job_text):
 
     if not resume_text or not job_text:
@@ -18,20 +16,48 @@ def match_resume_ml(resume_text, job_text):
     resume_text = clean_text(resume_text)
     job_text = clean_text(job_text)
 
-    if ML_AVAILABLE:
-        vectorizer = TfidfVectorizer(stop_words='english', ngram_range=(1,2))
-        vectors = vectorizer.fit_transform([resume_text, job_text])
-        similarity = cosine_similarity(vectors[0:1], vectors[1:2])[0][0]
-        return round(similarity * 100, 2)
-    else:
-        common = set(resume_text.split()) & set(job_text.split())
-        score = len(common) / max(len(job_text.split()), 1)
-def skill_gap_analysis(resume_text, job_description):
-    resume_words = set(clean_text(resume_text).split())
-    job_words = set(clean_text(job_description).split())
+    texts = [resume_text, job_text]
 
-    missing_skills = job_words - resume_words
+    vectorizer = TfidfVectorizer(stop_words='english', ngram_range=(1,2))
+    vectors = vectorizer.fit_transform(texts)
 
-    return list(missing_skills)[:10]  # show top 10 missing skills
-def send_job_notification(user, job):
-    print(f"Notification sent to {user} for job {job}")
+    similarity = cosine_similarity(vectors[0:1], vectors[1:2])[0][0]
+
+    return round(similarity * 100, 2)
+
+def skill_gap_analysis(user_skills, job_skills):
+    user_set = set(skill.strip().lower() for skill in user_skills.split(","))
+    job_set = set(skill.strip().lower() for skill in job_skills.split(","))
+
+    missing = job_set - user_set
+
+    return list(missing)
+
+from django.core.mail import send_mail
+from django.contrib.auth.models import User
+
+def send_job_notification(job):
+    students = User.objects.filter(is_superuser=False)
+
+    emails = [user.email for user in students if user.email]
+
+    subject = f"New Job Opportunity: {job.company}"
+
+    message = f"""
+New Job Posted!
+
+Company: {job.company}
+Package: {job.package}
+Skills Required: {job.required_skills}
+
+Apply now in Placement System.
+"""
+
+    if emails:
+        send_mail(
+            subject,
+            message,
+            'your_email@gmail.com',  # replace
+            emails,
+            fail_silently=False
+        )
