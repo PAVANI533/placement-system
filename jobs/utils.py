@@ -1,6 +1,6 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-
+from django.conf import settings
 
 # ✅ Clean text
 def clean_text(text):
@@ -55,9 +55,9 @@ Apply now in Placement System.
 
     if emails:
         send_mail(
-            subject,
-            message,
-            'your_email@gmail.com',  # replace
-            emails,
-            fail_silently=False
-        )
+        subject,
+        message,
+        settings.EMAIL_HOST_USER,   # ✅ FIX THIS
+        emails,
+        fail_silently=False,
+)

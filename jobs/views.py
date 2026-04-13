@@ -190,7 +190,7 @@ def register(request):
             user.save()
 
             # 🔥 CREATE PROFILE
-        
+            profile = UserProfile.objects.create(user=user)
 
             # PHOTO
             if request.FILES.get('photo'):
@@ -230,8 +230,11 @@ def register(request):
             profile.security_question = form.cleaned_data.get('security_question',"")
             profile.security_answer = form.cleaned_data.get('security_answer',"")
             # RESUME
-            if request.FILES.get('resume'):
-                profile.resume = request.FILES.get('resume')
+           # RESUME
+            resume_file = request.FILES.get('resume')
+
+            if resume_file:
+                Resume.objects.create(user=user, resume_file=resume_file)
             try:
                 profile.save()
             except Exception as e:
@@ -831,10 +834,14 @@ def recommended_jobs(request):
                 job_skills = job.required_skills.lower()
 
                 # ✅ match ANY skill
-                if any(skill in job_skills for skill in user_skills):
-                    filtered_jobs.append(job)
+                user_set = set(s.strip().lower() for s in profile.skills.split(","))
+                job_set = set(s.strip().lower() for s in job.required_skills.split(","))
 
-        jobs = filtered_jobs
+                common = user_set.intersection(job_set)
+                score = match_resume_ml(profile.skills, job.required_skills)
+
+                if score >= 50 and len(common) >= 2:
+                    filtered_jobs.append(job)
 
     # ✅ ADD skills_list for template (IMPORTANT FIX)
     for job in jobs:
@@ -1168,7 +1175,7 @@ def download_excel(request):
                 profile.roll_number,
                 profile.department,
                 user.email,
-                profile.cgpa,
+                profile.btech_percentage,
                 profile.backlogs,
                 profile.current_year
             ])
