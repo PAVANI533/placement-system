@@ -115,43 +115,6 @@ def extract_resume_text(file_path):
     return text.lower()
 
 
-# ✅ ML Matching using TF-IDF
-def match_resume_ml(resume_text, job_text):
-
-    if not resume_text or not job_text:
-        return 0
-
-    texts = [resume_text, job_text]
-
-    vectorizer = TfidfVectorizer(stop_words='english')
-    vectors = vectorizer.fit_transform(texts)
-
-    similarity = cosine_similarity(vectors[0:1], vectors[1:2])[0][0]
-
-    return round(similarity * 100, 2)
-@csrf_exempt  # disables CSRF checks for public form
-def upload_resume_public(request):
-    if request.method == 'POST':
-        resume_file = request.FILES.get('resume')
-        full_name = request.POST.get('full_name')
-        email = request.POST.get('email')
-        skills = request.POST.get('skills', '')
-
-        # Validate
-        if not resume_file:
-            return render(request, 'jobs/upload_resume_public.html', {'error': 'Please upload a file.'})
-
-        # Save to DB
-        Resume.objects.create(
-            full_name=full_name,
-            email=email,
-            skills=skills,
-            resume_file=resume_file
-        )
-
-        return render(request, 'jobs/upload_success.html')
-
-    return render(request, 'jobs/upload_resume_public.html')
 from django.contrib.auth.decorators import user_passes_test
 
 def is_admin(user):
@@ -221,7 +184,7 @@ def register(request):
             user.save()
 
             # 🔥 CREATE PROFILE
-            profile, created = UserProfile.objects.get_or_create(user=user)
+        
 
             # PHOTO
             if request.FILES.get('photo'):
@@ -271,7 +234,7 @@ def register(request):
 
             return redirect('login')
         else:
-            print(form.errors)
+            messages.error(request, form.errors)
 
 
     else:
@@ -987,7 +950,11 @@ def selected_students(request):
     })
 
 from django.contrib.auth import logout
+from django.contrib.auth.models import User
 
+# AUTO CREATE ADMIN (only once)
+if not User.objects.filter(username="admin").exists():
+    User.objects.create_superuser("admin", "admin@gmail.com", "admin123")
 def custom_logout(request):
     logout(request)
     return redirect('login')
