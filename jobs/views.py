@@ -190,8 +190,7 @@ def register(request):
             user.save()
 
             # 🔥 CREATE PROFILE
-            profile = UserProfile.objects.create(user=user)
-
+            profile = user.userprofile 
             # PHOTO
             if request.FILES.get('photo'):
                 profile.photo = request.FILES.get('photo')
