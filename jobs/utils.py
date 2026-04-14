@@ -48,12 +48,13 @@ from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from django.conf import settings
 
-def send_job_notification(job):
-    if not settings.EMAIL_HOST_USER:
-        print("Email not configured")
-        return
+import threading
+from django.core.mail import send_mail
+from django.contrib.auth.models import User
+from django.conf import settings
 
-    students = User.objects.filter(is_superuser=False).iterator()  # 🔥 FIX
+def send_emails_background(job):
+    students = User.objects.filter(is_superuser=False)
 
     subject = f"New Job Opportunity: {job.company}"
 
@@ -78,4 +79,9 @@ Apply now in Placement System.
                     fail_silently=True,
                 )
             except Exception as e:
-                print("Email failed for:", user.email, e)
+                print("Email failed:", e)
+
+
+def send_job_notification(job):
+    thread = threading.Thread(target=send_emails_background, args=(job,))
+    thread.start()
