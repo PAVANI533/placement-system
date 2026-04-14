@@ -136,7 +136,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'placementcell33455@gmail.com'
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")  # Better: store in environment variables
+EMAIL_HOST_PASSWORD ='efhdinjkvidicjat'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
  #'efhdinjkvidicjat'
 CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com']

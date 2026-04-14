@@ -36,10 +36,20 @@ def skill_gap_analysis(user_skills, job_skills):
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
 
-def send_job_notification(job):
-    students = User.objects.filter(is_superuser=False)
+from django.core.mail import send_mail
+from django.contrib.auth.models import User
+from django.conf import settings
 
-    emails = [user.email for user in students if user.email]
+from django.core.mail import send_mail
+from django.contrib.auth.models import User
+from django.conf import settings
+
+def send_job_notification(job):
+    if not settings.EMAIL_HOST_USER:
+        print("Email not configured")
+        return
+
+    students = User.objects.filter(is_superuser=False)
 
     subject = f"New Job Opportunity: {job.company}"
 
@@ -53,11 +63,15 @@ Skills Required: {job.required_skills}
 Apply now in Placement System.
 """
 
-    if emails:
-        send_mail(
-        subject,
-        message,
-        settings.EMAIL_HOST_USER,   # ✅ FIX THIS
-        emails,
-        fail_silently=False,
-)
+    for user in students:
+        if user.email:
+            try:
+                send_mail(
+                    subject,
+                    message,
+                    settings.EMAIL_HOST_USER,
+                    [user.email],
+                    fail_silently=True,
+                )
+            except Exception as e:
+                print("Email failed for:", user.email, e)
