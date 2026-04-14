@@ -44,12 +44,16 @@ from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from django.conf import settings
 
+from django.core.mail import send_mail
+from django.contrib.auth.models import User
+from django.conf import settings
+
 def send_job_notification(job):
     if not settings.EMAIL_HOST_USER:
         print("Email not configured")
         return
 
-    students = User.objects.filter(is_superuser=False)
+    students = User.objects.filter(is_superuser=False).iterator()  # 🔥 FIX
 
     subject = f"New Job Opportunity: {job.company}"
 
