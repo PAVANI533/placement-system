@@ -44,17 +44,23 @@ from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from django.conf import settings
 
-from django.core.mail import send_mail
-from django.contrib.auth.models import User
-from django.conf import settings
 
-import threading
-from django.core.mail import send_mail
-from django.contrib.auth.models import User
-from django.conf import settings
 
-def send_emails_background(job):
+def send_job_notification(job):
+
     students = User.objects.filter(is_superuser=False)
+
+    email_list = list(
+        students.exclude(email__isnull=True)
+        .exclude(email__exact="")
+        .values_list('email', flat=True)
+    )
+
+    print("📧 Emails:", email_list)
+
+    if not email_list:
+        print("❌ No emails found")
+        return
 
     subject = f"New Job Opportunity: {job.company}"
 
@@ -68,20 +74,15 @@ Skills Required: {job.required_skills}
 Apply now in Placement System.
 """
 
-    for user in students:
-        if user.email:
-            try:
-                send_mail(
-                    subject,
-                    message,
-                    settings.EMAIL_HOST_USER,
-                    [user.email],
-                    fail_silently=True,
-                )
-            except Exception as e:
-                print("Email failed:", e)
+    try:
+        result = send_mail(
+            subject,
+            message,
+            settings.DEFAULT_FROM_EMAIL,
+            email_list,
+            fail_silently=False,
+        )
+        print("✅ Send result:", result)
 
-
-def send_job_notification(job):
-    thread = threading.Thread(target=send_emails_background, args=(job,))
-    thread.start()
+    except Exception as e:
+        print("❌ Email Error:", e)

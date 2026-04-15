@@ -147,8 +147,8 @@ def add_job(request):
             package=request.POST.get('package'),
             interview_date=request.POST.get('interview_date')
         )
-
-        send_job_notification(job)   # ✅ now works
+        print("🔥 Job created:", job.company)
+        send_job_notification(job) # ✅ now works
 
         return redirect('officer_dashboard')
 
@@ -186,7 +186,8 @@ def register(request):
 
         if form.is_valid():
             user = form.save()
-            user.set_password(form.cleaned_data.get("password1"))  # 🔥 IMPORTANT
+            user.set_password(form.cleaned_data.get("password1")) 
+            user.email = request.POST.get("email") # 🔥 IMPORTANT
             user.save()
 
             # 🔥 CREATE PROFILE
@@ -1002,40 +1003,7 @@ from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from django.conf import settings
 
-def send_job_notification(job):
 
-    students = User.objects.filter(is_superuser=False)
-    email_list = [s.email for s in students if s.email]
-
-    if not email_list:
-        print("No emails found")
-        return
-
-    subject = f"New Job Posted: {job.title}"
-
-    message = f"""
-A new job has been posted!
-
-Company: {job.company}
-Role: {job.title}
-Location: {job.location}
-Skills: {job.required_skills}
-
-Apply now in the portal.
-"""
-
-    try:
-        send_mail(
-            subject,
-            message,
-            settings.DEFAULT_FROM_EMAIL,
-            email_list,
-            fail_silently=False,
-        )
-        print("✅ Emails sent")
-
-    except Exception as e:
-        print("❌ Error:", e)
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
