@@ -5,6 +5,7 @@ from .models import UserProfile, SECURITY_QUESTIONS
 import random
 
 class CustomUserRegisterForm(UserCreationForm):
+    email = forms.EmailField(required=True)
     phone = forms.CharField(max_length=10, required=True)
     security_question = forms.ChoiceField(
         choices=SECURITY_QUESTIONS,
