@@ -135,7 +135,7 @@ EMAIL_BACKEND =  'sendgrid_backend.SendgridBackend'
 
 SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY") 
 
-DEFAULT_FROM_EMAIL = 'placementcell33455@gmail.com'
+DEFAULT_FROM_EMAIL = 'sreep675@gmail.com'
  #'efhdinjkvidicjat'
 CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com']
 LOGIN_REDIRECT_URL = '/redirect-after-login/'
