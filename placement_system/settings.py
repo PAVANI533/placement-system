@@ -131,12 +131,11 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'placementcell33455@gmail.com'
-EMAIL_HOST_PASSWORD ='efhdinjkvidicjat'
+EMAIL_BACKEND =  'sendgrid_backend.SendgridBackend'
+
+SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY") 
+
+EMAIL_HOST_USER = 'sreep675@gmail.com'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
  #'efhdinjkvidicjat'
 CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com']
