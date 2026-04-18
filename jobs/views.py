@@ -961,8 +961,6 @@ from django.contrib.auth import logout
 from django.contrib.auth.models import User
 
 # AUTO CREATE ADMIN (only once)
-if not User.objects.filter(username="admin").exists():
-    User.objects.create_superuser("admin", "admin@gmail.com", "admin123")
 def custom_logout(request):
     logout(request)
     return redirect('login')
