@@ -2,12 +2,7 @@ from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.conf import settings
-from django.core.management import call_command
 
-try:
-    call_command('migrate', interactive=False)
-except Exception as e:
-    print("Migration error:", e)
 from .models import Job, Resume, JobMatch,JobApplication
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
@@ -669,7 +664,7 @@ def update_profile(request):
             profile.passout_year = request.POST.get('passout_year')
             profile.backlogs = request.POST.get('backlogs') or 0
             profile.skills = request.POST.get('skills')
-
+            profile.phone = request.POST.get('phone')
         elif edit_section == "resume":
             if request.FILES.get('resume'):
                 profile.resume = request.FILES.get('resume')

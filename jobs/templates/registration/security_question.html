@@ -1,4 +1,5 @@
-<h2>Security Question</h2>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- <h2>Security Question</h2>
 
 <p>{{ question }}</p>
 
@@ -10,4 +11,39 @@
 
 {% if error %}
 <p style="color:red">{{ error }}</p>
-{% endif %}
+{% endif %} -->
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+
+            <div class="card shadow p-4 rounded-4">
+                <h3 class="text-center mb-3">🔑 Security Verification</h3>
+
+                <p class="text-center fw-bold text-primary">
+                    {{ question }}
+                </p>
+
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label">Your Answer</label>
+                        <input type="password" name="answer" class="form-control" placeholder="Enter your answer" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-100">
+                        Verify
+                    </button>
+                </form>
+
+                {% if error %}
+                <div class="alert alert-danger mt-3 text-center">
+                    {{ error }}
+                </div>
+                {% endif %}
+
+            </div>
+
+        </div>
+    </div>
+</div>

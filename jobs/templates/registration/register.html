@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
+    
 .container {
     width: 90%;
     max-width: 1000px;
@@ -104,7 +105,8 @@ button:hover {
 }
 </style>
 
-<div class="container">
+<div class="container mt-5">
+
 
 <h2>📝 Student Registration</h2>
 
@@ -113,23 +115,23 @@ button:hover {
 
 <!-- 🔐 ACCOUNT -->
 <h3>🔐 Account Details</h3>
-<div class="row">
-    <div class="field">
+<div class="row" mb-3>
+    <div class="field col-md-6 mb-3">
         <label>Username</label>
         {{ form.username }}
     </div>
-    <div class="field">
+    <div class="field col-md-6 mb-3">
         <label>Email</label>
         {{ form.email }}
     </div>
 </div>
 
-<div class="row">
-    <div class="field">
+<div class="row mb-3">
+    <div class="field col-md-6 mb-3">
         <label>Password</label>
         {{ form.password1 }}
     </div>
-    <div class="field">
+    <div class="field col-md-6 mb-3">
         <label>Confirm Password</label>
         {{ form.password2 }}
     </div>
@@ -137,7 +139,7 @@ button:hover {
 
 <!-- 📸 PHOTO -->
 <h3>📸 Profile Photo</h3>
-<div class="field">
+<div class="field col-md-6 mb-3">
     <label>Upload Photo</label>
     <input type="file" name="photo">
 </div>
@@ -145,35 +147,35 @@ button:hover {
 <!-- 🏫 10TH -->
 <h3>🏫 10th Details</h3>
 
-<div class="field">
+<div class="field col-md-6 mb-3">
     <label>School Name</label>
     <input type="text" name="tenth_school">
 </div>
 
-<div class="row">
-    <div class="field">
+<div class="row mb-3">
+    <div class="field col-md-6 mb-3">
         <label>Area</label>
         <input type="text" name="tenth_area">
     </div>
-    <div class="field">
+    <div class="field col-md-6 mb-3">
         <label>District</label>
         <input type="text" name="tenth_district">
     </div>
 </div>
 
-<div class="row">
-    <div class="field">
+<div class="row mb-3">
+    <div class="field col-md-6 mb-3">
         <label>State</label>
         <input type="text" name="tenth_state">
     </div>
-    <div class="field">
+    <div class="field col-md-6 mb-3">
         <label>Pincode</label>
         <input type="text" name="tenth_pincode">
     </div>
 </div>
 
-<div class="row">
-    <div class="field">
+<div class="row mb-3">
+    <div class="field col-md-6 mb-3">
         <label>Board</label>
         <select name="tenth_board">
             <option>SSC</option>
@@ -182,12 +184,12 @@ button:hover {
         </select>
     </div>
 
-    <div class="field">
+    <div class="field col-md-6 mb-3">
         <label>Percentage</label>
         <input type="number" name="tenth_percentage">
     </div>
 
-    <div class="field">
+    <div class="field col-md-6 mb-3">
         <label>Passout Year</label>
         <input type="number" name="tenth_year">
     </div>
@@ -196,35 +198,35 @@ button:hover {
 <!-- 🏫 INTER -->
 <h3>🏫 Intermediate Details</h3>
 
-<div class="field">
+<div class="field col-md-6 mb-3">
     <label>College Name</label>
     <input type="text" name="inter_college">
 </div>
 
-<div class="row">
-    <div class="field">
+<div class="row mb-3">
+    <div class="field col-md-6 mb-3">
         <label>Area</label>
         <input type="text" name="inter_area">
     </div>
-    <div class="field">
+    <div class="field col-md-6 mb-3">
         <label>District</label>
         <input type="text" name="inter_district">
     </div>
 </div>
 
-<div class="row">
-    <div class="field">
+<div class="row mb-3">
+    <div class="field col-md-6 mb-3">
         <label>State</label>
         <input type="text" name="inter_state">
     </div>
-    <div class="field">
+    <div class="field col-md-6 mb-3">
         <label>Pincode</label>
         <input type="text" name="inter_pincode">
     </div>
 </div>
 
-<div class="row">
-    <div class="field">
+<div class="row mb-3">
+    <div class="field col-md-6 mb-3">
         <label>Board</label>
         <select name="inter_board">
             <option>State Board</option>
@@ -232,19 +234,19 @@ button:hover {
         </select>
     </div>
 
-    <div class="field">
+    <div class="field col-md-6 mb-3">
         <label>Stream</label>
         <select name="inter_stream">
             <option>MPC</option>
         </select>
     </div>
 
-    <div class="field">
+    <div class="field col-md-6 mb-3">
         <label>Percentage</label>
         <input type="number" name="inter_percentage">
     </div>
 
-    <div class="field">
+    <div class="field col-md-6 mb-3">
         <label>Passout Year</label>
         <input type="number" name="inter_year">
     </div>
@@ -253,18 +255,18 @@ button:hover {
 <!-- 🎓 BTECH -->
 <h3>🎓 B.Tech Details</h3>
 
-<div class="field">
+<div class="field col-md-6 mb-3">
     <label>College Name</label>
     <input type="text" name="btech_college">
 </div>
 
-<div class="row">
-    <div class="field">
+<div class="row mb-3">
+    <div class="field col-md-6 mb-3">
         <label>Roll Number</label>
         <input type="text" name="roll_number">
     </div>
 
-    <div class="field">
+    <div class="field col-md-6 mb-3">
         <label>Department</label>
         <select name="department">
             <option>CSE</option>
@@ -275,58 +277,71 @@ button:hover {
         </select>
     </div>
 
-    <div class="field">
+    <div class="field col-md-6 mb-3">
         <label>Current Year</label>
         <input type="number" name="current_year">
     </div>
 </div>
 
-<div class="row">
-    <div class="field">
+<div class="row mb-3">
+    <div class="field col-md-6 mb-3">
         <label>Email</label>
         <input type="email" name="email">
     </div>
 
-    <div class="field">
+    <div class="field col-md-6 mb-3">
         <label>Upload Resume</label>
         <input type="file" name="resume">
     </div>
 </div>
 
-<div class="row">
-    <div class="field">
+<div class="row mb-3">
+    <div class="field col-md-6 mb-3">
         <label>B.Tech Percentage</label>
         <input type="number" name="btech_percentage">
     </div>
 
-    <div class="field">
+    <div class="field col-md-6 mb-3">
         <label>Passout Year</label>
         <input type="number" name="passout_year">
     </div>
 
-    <div class="field">
+    <div class="field col-md-6 mb-3">
         <label>Backlogs</label>
         <input type="number" name="backlogs">
     </div>
 </div>
 
-<div class="field">
+<div class="field col-md-6 mb-3">
     <label>Skills</label>
     <textarea name="skills"></textarea>
 </div>
 
-    <input type="text" name="phone" placeholder="Phone Number" required>
+<div class="row mb-3">
+    <div class="col-md-6">
+        <label>Phone Number</label>
+        <input type="text" name="phone" class="form-control" placeholder="Phone Number" required>
+    </div>
 
-    <select name="security_question" required>
-        <option value="">Select Security Question</option>
-        <option value="pet">What is your pet name?</option>
-        <option value="school">What is your school name?</option>
-        <option value="city">Which city were you born in?</option>
-    </select>
+    <div class="col-md-6">
+        <label>Security Question</label>
+        <select name="security_question" class="form-control" required>
+            <option value="">Select Security Question</option>
+            <option value="pet">What is your pet name?</option>
+            <option value="school">What is your school name?</option>
+            <option value="city">Which city were you born in?</option>
+        </select>
+    </div>
+</div>
 
-    <input type="text" name="security_answer" placeholder="Your Answer" required>
+<div class="mb-3">
+    <label>Security Answer</label>
+    <input type="text" name="security_answer" class="form-control" placeholder="Your Answer" required>
+</div>
 
-    <button type="submit">Register</button>
+<button type="submit" class="btn btn-primary w-100 mt-3">
+    🚀 Register
+</button>
 
 
 </form>

@@ -202,23 +202,45 @@ button:hover {
     <form method="POST">
         {% csrf_token %}
 
-        <input name="tenth_school" value="{{ profile.tenth_school }}" placeholder="School">
+        <label>School</label>
+<input name="tenth_school" value="{{ profile.tenth_school }}" placeholder="School">
 
-        <div class="grid-2">
-            <input name="tenth_area" value="{{ profile.tenth_area }}" placeholder="Area">
-            <input name="tenth_district" value="{{ profile.tenth_district }}" placeholder="District">
-        </div>
+<div class="grid-2">
+    <div>
+        <label>Area</label>
+        <input name="tenth_area" value="{{ profile.tenth_area }}" placeholder="Area">
+    </div>
+    <div>
+        <label>District</label>
+        <input name="tenth_district" value="{{ profile.tenth_district }}" placeholder="District">
+    </div>
+</div>
 
-        <div class="grid-2">
-            <input name="tenth_state" value="{{ profile.tenth_state }}" placeholder="State">
-            <input name="tenth_pincode" value="{{ profile.tenth_pincode }}" placeholder="Pincode">
-        </div>
+<div class="grid-2">
+    <div>
+        <label>State</label>
+        <input name="tenth_state" value="{{ profile.tenth_state }}" placeholder="State">
+    </div>
+    <div>
+        <label>Pincode</label>
+        <input name="tenth_pincode" value="{{ profile.tenth_pincode }}" placeholder="Pincode">
+    </div>
+</div>
 
-        <div class="grid-3">
-            <input name="tenth_board" value="{{ profile.tenth_board }}" placeholder="Board">
-            <input name="tenth_percentage" value="{{ profile.tenth_percentage }}" placeholder="Percentage">
-            <input name="tenth_year" value="{{ profile.tenth_year }}" placeholder="Year">
-        </div>
+<div class="grid-3">
+    <div>
+        <label>Board</label>
+        <input name="tenth_board" value="{{ profile.tenth_board }}" placeholder="Board">
+    </div>
+    <div>
+        <label>Percentage</label>
+        <input name="tenth_percentage" value="{{ profile.tenth_percentage }}" placeholder="Percentage">
+    </div>
+    <div>
+        <label>Year</label>
+        <input name="tenth_year" value="{{ profile.tenth_year }}" placeholder="Year">
+    </div>
+</div>
 
         <button>Save</button>
     </form>
@@ -248,26 +270,48 @@ button:hover {
     <form method="POST">
         {% csrf_token %}
 
-        <input name="inter_college" value="{{ profile.inter_college }}" placeholder="College">
+        <label>College</label>
+<input name="inter_college" value="{{ profile.inter_college }}" placeholder="College">
 
-        <div class="grid-3">
-            <input name="inter_stream" value="{{ profile.inter_stream }}" placeholder="Stream">
-            <input name="inter_percentage" value="{{ profile.inter_percentage }}" placeholder="Percentage">
-            <input name="inter_year" value="{{ profile.inter_year }}" placeholder="Year">
-        </div>
+<div class="grid-3">
+    <div>
+        <label>Stream</label>
+        <input name="inter_stream" value="{{ profile.inter_stream }}" placeholder="Stream">
+    </div>
+    <div>
+        <label>Percentage</label>
+        <input name="inter_percentage" value="{{ profile.inter_percentage }}" placeholder="Percentage">
+    </div>
+    <div>
+        <label>Year</label>
+        <input name="inter_year" value="{{ profile.inter_year }}" placeholder="Year">
+    </div>
+</div>
 
-        <div class="grid-2">
-            <input name="inter_area" value="{{ profile.inter_area }}" placeholder="Area">
-            <input name="inter_district" value="{{ profile.inter_district }}" placeholder="District">
-        </div>
+<div class="grid-2">
+    <div>
+        <label>Area</label>
+        <input name="inter_area" value="{{ profile.inter_area }}" placeholder="Area">
+    </div>
+    <div>
+        <label>District</label>
+        <input name="inter_district" value="{{ profile.inter_district }}" placeholder="District">
+    </div>
+</div>
 
-        <div class="grid-2">
-            <input name="inter_state" value="{{ profile.inter_state }}" placeholder="State">
-            <input name="inter_pincode" value="{{ profile.inter_pincode }}" placeholder="Pincode">
-        </div>
+<div class="grid-2">
+    <div>
+        <label>State</label>
+        <input name="inter_state" value="{{ profile.inter_state }}" placeholder="State">
+    </div>
+    <div>
+        <label>Pincode</label>
+        <input name="inter_pincode" value="{{ profile.inter_pincode }}" placeholder="Pincode">
+    </div>
+</div>
 
-        <input name="inter_board" value="{{ profile.inter_board }}" placeholder="Board">
-
+<label>Board</label>
+<input name="inter_board" value="{{ profile.inter_board }}" placeholder="Board">
         <button>Save</button>
     </form>
 
@@ -297,23 +341,42 @@ button:hover {
     <form method="POST">
         {% csrf_token %}
 
+        <label>College</label>
         <input name="btech_college" value="{{ profile.btech_college }}" placeholder="College">
-
+        
         <div class="grid-3">
-            <input name="roll_number" value="{{ profile.roll_number }}" placeholder="Roll">
-            <input name="current_year" value="{{ profile.current_year }}" placeholder="Year">
-            <input name="passout_year" value="{{ profile.passout_year }}" placeholder="Passout">
+            <div>
+                <label>Roll Number</label>
+                <input name="roll_number" value="{{ profile.roll_number }}" placeholder="Roll">
+            </div>
+            <div>
+                <label>Current Year</label>
+                <input name="current_year" value="{{ profile.current_year }}" placeholder="Year">
+            </div>
+            <div>
+                <label>Passout Year</label>
+                <input name="passout_year" value="{{ profile.passout_year }}" placeholder="Passout">
+            </div>
         </div>
-
+        
         <div class="grid-2">
-            <input name="department" value="{{ profile.department }}" placeholder="Department">
-            <input name="btech_percentage" value="{{ profile.btech_percentage }}" placeholder="CGPA">
+            <div>
+                <label>Department</label>
+                <input name="department" value="{{ profile.department }}" placeholder="Department">
+            </div>
+            <div>
+                <label>CGPA</label>
+                <input name="btech_percentage" value="{{ profile.btech_percentage }}" placeholder="CGPA">
+            </div>
         </div>
-
+        
+        <label>Backlogs</label>
         <input name="backlogs" value="{{ profile.backlogs }}" placeholder="Backlogs">
-
+        
+        <label>Skills</label>
         <textarea name="skills">{{ profile.skills }}</textarea>
-
+        <label>Phone Number</label>
+        <input name="phone" value="{{ profile.phone }}" placeholder="Phone Number">
         <button>Save</button>
     </form>
 
@@ -326,7 +389,7 @@ button:hover {
         <p><b>CGPA:</b> {{ profile.btech_percentage }}</p>
         <p><b>Backlogs:</b> {{ profile.backlogs }}</p>
         <p><b>Skills:</b> {{ profile.skills }}</p>
-
+        <p><b>Phone:</b> {{ profile.phone }}</p>
     {% endif %}
 </div>
 <!-- 📄 RESUME -->

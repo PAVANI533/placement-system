@@ -70,12 +70,27 @@ def send_job_notification(job):
 
     try:
         result = send_mail(
-            f"Test Job: {job.company}",
-            "This is a test email from placement system",
-            settings.DEFAULT_FROM_EMAIL,
-            email_list,
-            fail_silently=False,
-        )
+    f"New Job Opportunity at {job.company}",
+    f"""
+Dear Student,
+
+We are pleased to inform you that a new job opportunity has been posted on the Placement Portal.
+
+📌 Company: {job.company}
+💼 Package: {job.package}
+🛠 Required Skills: {job.required_skills}
+
+We encourage you to log in to the Placement System and apply as soon as possible.
+
+🔗 Visit: Placement Portal
+
+Best regards,  
+Placement Cell  
+""",
+    settings.DEFAULT_FROM_EMAIL,
+    email_list,
+    fail_silently=False,
+)
         print("✅ Send result:", result)
 
     except Exception as e:
