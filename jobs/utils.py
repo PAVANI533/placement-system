@@ -48,7 +48,11 @@ from django.conf import settings
 
 def send_job_notification(job):
 
+    print("🔥 FUNCTION STARTED")
+
     students = User.objects.filter(is_superuser=False)
+
+    print("👤 All Users:", list(User.objects.values_list('username', 'email')))
 
     email_list = list(
         students.exclude(email__isnull=True)
@@ -57,27 +61,17 @@ def send_job_notification(job):
     )
 
     print("📧 Emails:", email_list)
+    print("📤 FROM:", settings.DEFAULT_FROM_EMAIL)
+    print("📡 BACKEND:", settings.EMAIL_BACKEND)
 
     if not email_list:
         print("❌ No emails found")
         return
 
-    subject = f"New Job Opportunity: {job.company}"
-
-    message = f"""
-New Job Posted!
-
-Company: {job.company}
-Package: {job.package}
-Skills Required: {job.required_skills}
-
-Apply now in Placement System.
-"""
-
     try:
         result = send_mail(
-            subject,
-            message,
+            f"Test Job: {job.company}",
+            "This is a test email from placement system",
             settings.DEFAULT_FROM_EMAIL,
             email_list,
             fail_silently=False,
