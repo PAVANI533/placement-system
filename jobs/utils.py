@@ -3,35 +3,66 @@ from sklearn.metrics.pairwise import cosine_similarity
 from django.conf import settings
 
 # ✅ Clean text
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+
+# ✅ Clean text
 def clean_text(text):
     return text.lower().replace(",", " ").replace("\n", " ")
 
 
-# ✅ ML Matching (TF-IDF + Cosine Similarity)
+# ✅ ML + Skill Matching (Improved)
 def match_resume_ml(resume_text, job_text):
 
     if not resume_text or not job_text:
         return 0
 
-    resume_text = clean_text(resume_text)
-    job_text = clean_text(job_text)
+    # 🔥 STEP 1: Convert skills to sets
+    user_set = set(s.strip().lower() for s in resume_text.split(",") if s.strip())
+    job_set = set(s.strip().lower() for s in job_text.split(",") if s.strip())
 
-    texts = [resume_text, job_text]
+    # 🔥 STEP 2: Find common skills
+    common = user_set.intersection(job_set)
 
-    vectorizer = TfidfVectorizer(stop_words='english', ngram_range=(1,2))
+    # ❌ If no common skills → no match
+    if len(common) == 0:
+        return 0
+
+    # 🔥 STEP 3: TF-IDF similarity (ML part)
+    resume_text_clean = clean_text(resume_text)
+    job_text_clean = clean_text(job_text)
+
+    texts = [resume_text_clean, job_text_clean]
+
+    vectorizer = TfidfVectorizer(
+        stop_words='english',
+        ngram_range=(1, 2),
+        max_features=5000
+    )
+
     vectors = vectorizer.fit_transform(texts)
 
     similarity = cosine_similarity(vectors[0:1], vectors[1:2])[0][0]
 
-    return round(similarity * 100, 2)
+    # 🔥 STEP 4: Skill-based score
+    skill_score = len(common) / len(job_set)
 
+    # 🔥 STEP 5: Final score (Hybrid)
+    final_score = (similarity * 0.5 + skill_score * 0.5) * 100
+
+    return round(final_score, 2)
+
+
+# ✅ Skill Gap Analysis (Improved)
 def skill_gap_analysis(user_skills, job_skills):
-    user_set = set(skill.strip().lower() for skill in user_skills.split(","))
-    job_set = set(skill.strip().lower() for skill in job_skills.split(","))
+
+    user_set = set(skill.strip().lower() for skill in user_skills.split(",") if skill.strip())
+    job_set = set(skill.strip().lower() for skill in job_skills.split(",") if skill.strip())
 
     missing = job_set - user_set
 
-    return list(missing)
+    return sorted(list(missing))
 
 from django.core.mail import send_mail
 from django.contrib.auth.models import User

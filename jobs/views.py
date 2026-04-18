@@ -815,29 +815,30 @@ from .models import Job, UserProfile, JobApplication
 def recommended_jobs(request):
     profile = request.user.userprofile
 
-    # ✅ Get all jobs
     jobs = Job.objects.all()
+    filtered_jobs = []   # ✅ define outside
 
-    # ✅ If student has skills → filter jobs
     if profile.skills:
-        user_skills = [s.strip().lower() for s in profile.skills.split(',') if s.strip()]
-
-        filtered_jobs = []
+        user_set = set(s.strip().lower() for s in profile.skills.split(",") if s.strip())
 
         for job in jobs:
             if job.required_skills:
-                job_skills = job.required_skills.lower()
+                job_set = set(s.strip().lower() for s in job.required_skills.split(",") if s.strip())
 
-                # ✅ match ANY skill
-                user_set = set(s.strip().lower() for s in profile.skills.split(","))
-                job_set = set(s.strip().lower() for s in job.required_skills.split(","))
-
+                # 🔥 common skills
                 common = user_set.intersection(job_set)
+
+                # 🔥 ML score
                 score = match_resume_ml(profile.skills, job.required_skills)
 
-                if score >= 50 and len(common) >= 2:
+                # ✅ FINAL FILTER CONDITION
+                if score >= 40 and len(common) >= 1:
                     filtered_jobs.append(job)
 
+    # ✅ IMPORTANT: send filtered_jobs (NOT jobs)
+    return render(request, 'jobs/recommended_jobs.html', {
+        'jobs': filtered_jobs
+    })
     # ✅ ADD skills_list for template (IMPORTANT FIX)
     for job in jobs:
         job.skills_list = job.required_skills.split(',') if job.required_skills else []
