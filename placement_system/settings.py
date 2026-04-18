@@ -140,7 +140,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'apikey'   # MUST be exactly 'apikey'
 EMAIL_HOST_PASSWORD = os.environ.get("SENDGRID_API_KEY")
 
-DEFAULT_FROM_EMAIL = 'sreep676@gmail.com'
+DEFAULT_FROM_EMAIL = 'sreep675@gmail.com'
  #'efhdinjkvidicjat'
 CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com']
 LOGIN_REDIRECT_URL = '/redirect-after-login/'
